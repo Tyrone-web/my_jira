@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import * as qs from 'qs';
 import { cleanObject, useDebounce, useMount } from 'utils/index';
 import { List } from './list';
 import { SearchPanel } from './search-panel';
-
-const apiUrl = process.env.REACT_APP_API_URL;
+import { useHttp } from 'utils/http';
 
 interface User {
   name: string;
   id: string;
+  token: string;
 }
 
 export const ProjectList = () => {
@@ -18,23 +17,16 @@ export const ProjectList = () => {
     id: '',
   });
   const [list, setList] = useState([]);
-
   const debouncedValue = useDebounce(param, 1000);
-
+  const client = useHttp();
   useMount(() => {
-    fetch(`${apiUrl}/users`)
-      .then((res) => res.json())
-      .then((data) => setUsers(data));
+    client('users').then(setUsers); // point Free
   });
 
   useEffect(() => {
-    fetch(
-      `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedValue))}`
-    ).then(async (responce) => {
-      if (responce.ok) {
-        setList(await responce.json());
-      }
-    });
+    client('projects', {
+      data: cleanObject(debouncedValue),
+    }).then((response) => setList(response));
   }, [debouncedValue]);
 
   return (
