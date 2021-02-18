@@ -19,6 +19,7 @@ export const ProjectList = () => {
   const [list, setList] = useState([]);
   const debouncedValue = useDebounce(param, 1000);
   const client = useHttp();
+
   useMount(() => {
     client('users').then(setUsers); // point Free
   });
@@ -27,6 +28,7 @@ export const ProjectList = () => {
     client('projects', {
       data: cleanObject(debouncedValue),
     }).then((response) => setList(response));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   return (
