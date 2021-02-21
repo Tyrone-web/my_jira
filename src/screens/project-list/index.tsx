@@ -14,7 +14,7 @@ export const ProjectList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [param, setParam] = useState({
     name: '',
-    id: '',
+    personId: '',
   });
   const [list, setList] = useState([]);
   const debouncedValue = useDebounce(param, 1000);

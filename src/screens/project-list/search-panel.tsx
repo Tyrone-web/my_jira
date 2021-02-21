@@ -7,7 +7,7 @@ export interface User {
 }
 
 interface SearchPanelProps {
-  param: { name: string; id: string };
+  param: { name: string; personId: string };
   users: User[];
   setParam: (param: SearchPanelProps['param']) => void;
   setUsers: (user: User[]) => void;
@@ -28,11 +28,11 @@ export const SearchPanel = (props: SearchPanelProps) => {
         }
       />
       <Select
-        value={param.id}
+        value={param.personId}
         onChange={(value) =>
           setParam({
             ...param,
-            id: value,
+            personId: value,
           })
         }
       >
