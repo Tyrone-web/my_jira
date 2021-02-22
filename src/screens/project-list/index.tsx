@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
 import { cleanObject, useDebounce, useMount } from 'utils/index';
 import { List } from './list';
 import { SearchPanel } from './search-panel';
@@ -32,7 +33,8 @@ export const ProjectList = () => {
   }, [debouncedValue]);
 
   return (
-    <>
+    <Container>
+      <h2>项目列表</h2>
       <SearchPanel
         param={param}
         setParam={setParam}
@@ -40,6 +42,10 @@ export const ProjectList = () => {
         setUsers={setUsers}
       />
       <List list={list} users={users} />
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 2.2rem;
+`;
