@@ -21,7 +21,7 @@ export const login = (data: { username: string; password: string }) => {
     if (responce.ok) {
       return handleUserResponse(await responce.json());
     } else {
-      return Promise.reject(data);
+      return Promise.reject(await responce.json());
     }
   });
 }
@@ -37,7 +37,7 @@ export const register = (data: { username: string; password: string }) => {
     if (responce.ok) {
       return handleUserResponse(await responce.json());
     } else {
-      return Promise.reject(data);
+      return Promise.reject(await responce.json());
     }
   });
 }

@@ -11,7 +11,6 @@ interface SearchPanelProps {
   param: { name: string; personId: string };
   users: User[];
   setParam: (param: SearchPanelProps['param']) => void;
-  setUsers: (user: User[]) => void;
 }
 
 export const SearchPanel = (props: SearchPanelProps) => {

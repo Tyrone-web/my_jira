@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 
 export const isFalsy = (value: unknown) => value === 0 ? false : !value
 
+export const isVoid = (value: unknown) => value === undefined || value === null || value === '';
+
+
 // 清楚对象中属性值为空的属性
-export const cleanObject = (object: { [property: string]: any }) => {
+export const cleanObject = (object: { [property: string]: unknown }) => {
   const result = { ...object }; // 重新生成一个对象，不直接改变传入的对象
   Object.keys(result).forEach((item: string) => {
     const value = result[item];
-    if (isFalsy(value)) {
+    if (isVoid(value)) {
       delete result[item]
     }
   })
