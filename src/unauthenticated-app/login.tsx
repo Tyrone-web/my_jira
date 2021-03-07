@@ -20,6 +20,8 @@ export const LoginScreen = ({
     } catch (e) {
       onError(e);
     }
+    // await run(login(values));
+    // onError(error); // 这是等到上面的run执行完了再执行嘛，如果是这样那这个时候应该可以获取error的值了吧。这里不太懂
   };
 
   return (

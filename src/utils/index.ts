@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const isFalsy = (value: unknown) => value === 0 ? false : !value
 
@@ -53,4 +53,26 @@ export const useArray = <T>(param: T[]) => {
     removeIndex,
     add
   }
+}
+
+export const useDocumentTitle = (title: string, keepOnMount = true) => {
+  const oldTitle = useRef(document.title).current;
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+
+  // 页面卸载重置document.title
+  useEffect(() => {
+    return () => {
+      if (!keepOnMount) {
+        document.title = oldTitle;
+      }
+    }
+  }, [keepOnMount, oldTitle]);
+}
+
+// 重置路由并刷新页面
+
+export const resetRouter = () => {
+  window.location.href = window.location.origin;
 }
