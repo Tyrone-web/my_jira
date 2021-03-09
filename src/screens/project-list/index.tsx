@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from '@emotion/styled';
 import { useDebounce, useDocumentTitle } from 'utils/index';
 import { List } from './list';
@@ -6,17 +5,14 @@ import { SearchPanel } from './search-panel';
 import { useUser } from 'utils/user';
 import { useProject } from 'utils/project';
 import { Typography } from 'antd';
+import { useProjectSearchParma } from './utils';
 
 export const ProjectList = () => {
-  const [param, setParam] = useState({
-    name: '',
-    personId: '',
-  });
-  const debouncedValue = useDebounce(param, 1000);
+  useDocumentTitle('项目列表', false);
+  const [param, setParam] = useProjectSearchParma();
 
   const { data: users } = useUser();
-  const { isLoading, error, data: list } = useProject(debouncedValue);
-  useDocumentTitle('项目列表', false);
+  const { isLoading, error, data: list } = useProject(useDebounce(param, 1000));
 
   return (
     <Container>

@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 
 interface User {
   name: string;
-  id: string;
+  id: number;
 }
 
 export interface Project {
   id: number;
   name: string;
-  personId: string | number;
+  personId: number;
   pin: boolean;
   organization: string;
   created: number;
@@ -44,7 +44,7 @@ export const List = ({ users, ...props }: ListProps) => {
             return (
               <span>
                 {users.find(
-                  (user: { id: string }) => Number(user.id) === project.personId
+                  (user: { id: number }) => Number(user.id) === project.personId
                 )?.name || '未知'}
               </span>
             );
