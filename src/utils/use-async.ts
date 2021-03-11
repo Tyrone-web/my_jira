@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useMountedRef } from 'utils';
 
 interface State<D> {
   error: Error | null;
@@ -23,34 +24,46 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     ...initialState
   });
 
-  const setData = (data: D) => setState({
-    data,
-    status: 'success',
-    error: null
-  });
-
-  const setError = (error: Error) => setState({
-    data: null,
-    status: 'error',
-    error
-  })
-
+  const [retry, setRetry] = useState(() => () => { }) //使用useState保存函数
+  const setData = useCallback(
+    (data: D) => setState({
+      data,
+      status: 'success',
+      error: null
+    }), []
+  );
+  const setError = useCallback(
+    (error: Error) => setState({
+      data: null,
+      status: 'error',
+      error
+    }), []
+  )
+  const mountedRef = useMountedRef();
   // 触发异步请求
-  const run = (promise: Promise<D>) => {
-    if (!promise || !promise.then) {
-      throw new Error('请传入Promise类型的函数')
-    }
-    setState({ ...state, status: 'loading' });
-    return promise.then((data: D) => {
-      setData(data);
-      return data; // 是否可以不返回
-    }).catch(error => {
-      // catch会消化异常，如果不主动抛出异常，外面是接受不到异常信息的
-      setError(error);
-      if (config.throwOnError) return Promise.reject(error); // 主动抛出异常
-      return error;
-    });
-  }
+  const run = useCallback(
+    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
+      if (!promise || !promise.then) {
+        throw new Error('请传入Promise类型的函数')
+      }
+      setState(prevState => ({ ...prevState, status: 'loading' }));
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          run(runConfig.retry(), runConfig)
+        }
+      });
+      return promise.then((data: D) => {
+        if (mountedRef.current)
+          setData(data);
+        return data; // 是否可以不返回
+      }).catch(error => {
+        // catch会消化异常，如果不主动抛出异常，外面是接受不到异常信息的
+        setError(error);
+        if (config.throwOnError) return Promise.reject(error); // 主动抛出异常
+        return error;
+      });
+    }, [config.throwOnError, mountedRef, setData, setError]
+  )
 
   return {
     isIdle: state.status === 'idle',
@@ -60,6 +73,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     run,
     setData,
     setError,
+    retry,
     ...state
   }
 }

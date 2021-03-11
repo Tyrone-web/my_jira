@@ -12,7 +12,9 @@ export const ProjectList = () => {
   const [param, setParam] = useProjectSearchParma();
 
   const { data: users } = useUser();
-  const { isLoading, error, data: list } = useProject(useDebounce(param, 1000));
+  const { isLoading, error, data: list, retry } = useProject(
+    useDebounce(param, 1000)
+  );
 
   return (
     <Container>
@@ -21,7 +23,12 @@ export const ProjectList = () => {
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
-      <List loading={isLoading} dataSource={list || []} users={users || []} />
+      <List
+        retry={retry}
+        loading={isLoading}
+        dataSource={list || []}
+        users={users || []}
+      />
     </Container>
   );
 };

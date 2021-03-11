@@ -1,6 +1,8 @@
 import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
+import { Pin } from 'components/pin';
+import { useEditProject } from 'utils/project';
 
 interface User {
   name: string;
@@ -18,14 +20,29 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
+  retry: () => void;
 }
 
-export const List = ({ users, ...props }: ListProps) => {
+export const List = ({ users, retry, ...props }: ListProps) => {
+  const { mutate } = useEditProject();
+  const pinPorject = (id: number) => (pin: boolean) =>
+    mutate({ id, pin }).then(retry);
   return (
     <Table
       rowKey="id"
       pagination={false}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                onCheckedChange={pinPorject(project.id)} // point free(函数颗粒化)
+              />
+            );
+          },
+        },
         {
           title: '名称',
           // dataIndex: 'name',

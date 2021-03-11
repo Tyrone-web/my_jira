@@ -10,8 +10,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       return keys.reduce((prev, key: K) => {
         return { ...prev, [key]: searchParams.get(key) || '' }
       }, {} as { [key in K]: string })
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchParams]),
+    }, [searchParams, keys]),
     (params: Partial<{ [key in K]: unknown }>) => {
       const o = cleanObject({ ...Object.fromEntries(searchParams), ...params }) as URLSearchParamsInit;
       return setSearchParams(o)
