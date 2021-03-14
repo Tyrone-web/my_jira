@@ -6,11 +6,15 @@ import { useUser } from 'utils/user';
 import { useProject } from 'utils/project';
 import { Typography } from 'antd';
 import { useProjectSearchParma } from './utils';
+import { Row } from 'components/lib';
 
-export const ProjectList = () => {
+export const ProjectList = (props: {
+  createProject: JSX.Element;
+  listCreateProject: JSX.Element;
+}) => {
+  const { createProject, listCreateProject } = props;
   useDocumentTitle('项目列表', false);
   const [param, setParam] = useProjectSearchParma();
-
   const { data: users } = useUser();
   const { isLoading, error, data: list, retry } = useProject(
     useDebounce(param, 1000)
@@ -18,12 +22,17 @@ export const ProjectList = () => {
 
   return (
     <Container>
-      <h2>项目列表</h2>
+      <Row between={true}>
+        <h2>项目列表</h2>
+        {createProject}
+      </Row>
+
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
       <List
+        listCreateProject={listCreateProject}
         retry={retry}
         loading={isLoading}
         dataSource={list || []}
