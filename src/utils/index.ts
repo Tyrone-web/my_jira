@@ -86,7 +86,7 @@ export const useMountedRef = () => {
     return () => {
       mountedRef.current = false;
     }
-  });
+  }, []);
 
   return mountedRef;
 }
