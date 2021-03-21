@@ -1,4 +1,4 @@
-import { Dropdown, Menu, Button } from 'antd';
+import { Dropdown, Menu } from 'antd';
 import styled from '@emotion/styled';
 import { Route, Routes, Navigate } from 'react-router';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -9,50 +9,27 @@ import { ReactComponent as Softwarelogo } from 'assets/software-logo.svg';
 import Project from 'screens/Project';
 import { resetRouter } from 'utils';
 import { ProjectModal } from 'screens/project-list/ProjectModal';
-import { useState } from 'react';
 import { ProjectPopOver } from 'components/project-popOver';
 
 export const AuthenticatedApp = () => {
-  const [isShowModal, setIsShowModal] = useState(false);
-
-  const onClose = () => setIsShowModal(false);
-  const handleCreateProject = () => setIsShowModal(true);
-  const createProject = (isPadding = false, isEdit = false) =>
-    isPadding ? (
-      <Button onClick={handleCreateProject}>创建项目</Button>
-    ) : (
-      <ButtonNoPadding onClick={handleCreateProject} type="link">
-        {isEdit ? '编辑' : ' 创建项目'}
-      </ButtonNoPadding>
-    );
-
   return (
     <Container>
-      <PageHeader createProject={createProject()} />
-      <Main>
-        <Router>
+      <Router>
+        <PageHeader />
+        <Main>
           <Routes>
-            <Route
-              path="/projects"
-              element={
-                <ProjectList
-                  createProject={createProject()}
-                  listCreateProject={createProject(false, true)}
-                />
-              }
-            ></Route>
+            <Route path="/projects" element={<ProjectList />}></Route>
             <Route path="/projects/:projectId/*" element={<Project />}></Route>
             <Navigate to="/projects" />
           </Routes>
-        </Router>
-      </Main>
-      <ProjectModal isShowModal={isShowModal} onClose={onClose} />
+        </Main>
+        <ProjectModal />
+      </Router>
     </Container>
   );
 };
 
-const PageHeader = (props: { createProject: JSX.Element }) => {
-  const { createProject } = props;
+const PageHeader = () => {
   const { logout, user } = useAuth();
 
   return (
@@ -61,7 +38,7 @@ const PageHeader = (props: { createProject: JSX.Element }) => {
         <ButtonNoPadding type="link" onClick={resetRouter}>
           <Softwarelogo width="12rem" color="rgb(38, 132, 255)" />
         </ButtonNoPadding>
-        <ProjectPopOver createProject={createProject} />
+        <ProjectPopOver />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRigth>

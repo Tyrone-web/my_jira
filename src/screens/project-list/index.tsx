@@ -5,14 +5,11 @@ import { SearchPanel } from './search-panel';
 import { useUser } from 'utils/user';
 import { useProject } from 'utils/project';
 import { Typography } from 'antd';
-import { useProjectSearchParma } from './utils';
-import { Row } from 'components/lib';
+import { useProjectModal, useProjectSearchParma } from './utils';
+import { ButtonNoPadding, Row } from 'components/lib';
 
-export const ProjectList = (props: {
-  createProject: JSX.Element;
-  listCreateProject: JSX.Element;
-}) => {
-  const { createProject, listCreateProject } = props;
+export const ProjectList = () => {
+  const { open } = useProjectModal();
   useDocumentTitle('项目列表', false);
   const [param, setParam] = useProjectSearchParma();
   const { data: users } = useUser();
@@ -24,7 +21,9 @@ export const ProjectList = (props: {
     <Container>
       <Row between={true}>
         <h2>项目列表</h2>
-        {createProject}
+        <ButtonNoPadding type="link" onClick={open}>
+          创建项目
+        </ButtonNoPadding>
       </Row>
 
       <SearchPanel param={param} setParam={setParam} users={users || []} />
@@ -32,7 +31,6 @@ export const ProjectList = (props: {
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
       <List
-        listCreateProject={listCreateProject}
         retry={retry}
         loading={isLoading}
         dataSource={list || []}
