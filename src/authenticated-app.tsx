@@ -9,14 +9,14 @@ import { ReactComponent as Softwarelogo } from 'assets/software-logo.svg';
 import Project from 'screens/Project';
 import { resetRouter } from 'utils';
 import { ProjectModal } from 'screens/project-list/ProjectModal';
-import { useState } from 'react';
 import { ProjectPopOver } from 'components/project-popOver';
+import { useDispatch } from 'react-redux';
+import { projectListActions } from 'screens/project-list/preject-list.slice';
 
 export const AuthenticatedApp = () => {
-  const [isShowModal, setIsShowModal] = useState(false);
-
-  const onClose = () => setIsShowModal(false);
-  const handleCreateProject = () => setIsShowModal(true);
+  const dispatch = useDispatch();
+  const handleCreateProject = () =>
+    dispatch(projectListActions.openProjectModal());
   const createProject = (isPadding = false, isEdit = false) =>
     isPadding ? (
       <Button onClick={handleCreateProject}>创建项目</Button>
@@ -46,7 +46,7 @@ export const AuthenticatedApp = () => {
           </Routes>
         </Router>
       </Main>
-      <ProjectModal isShowModal={isShowModal} onClose={onClose} />
+      <ProjectModal />
     </Container>
   );
 };
