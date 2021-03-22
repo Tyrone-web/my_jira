@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useProject } from "utils/project";
 import { useUrlQueryParam } from "utils/url";
 
 export const useProjectSearchParma = () => {
@@ -18,13 +19,31 @@ export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
     'projectCreate'
   ]);
+  const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
+    'editingProjectId'
+  ]);
 
-  const open = () => setProjectCreate({ projectCreate: true });
-  const close = () => setProjectCreate({ projectCreate: undefined });
+  console.log(editingProjectId, 'editingProjectId');
+  const { data: editingProject, isLoading } = useProject(Number(editingProjectId))
+
+  const open = () => {
+    console.log('open');
+    setProjectCreate({ projectCreate: true })
+  };
+  const close = () => {
+    console.log('test');
+    setProjectCreate({ projectCreate: undefined });
+    setEditingProjectId({ editingProjectId: undefined });
+  };
+  // const close = () => setProjectCreate({ projectCreate: undefined });
+  const startEdit = (id: number) => setEditingProjectId({ editingProjectId: id });
 
   return {
-    projectModalOpen: projectCreate === 'true',
+    projectModalOpen: projectCreate === 'true' || !!editingProjectId, // 视屏里这是editingProject？？
     open,
-    close
+    close,
+    startEdit,
+    editingProject,
+    isLoading
   }
 }

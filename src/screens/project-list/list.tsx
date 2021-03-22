@@ -22,14 +22,17 @@ export interface Project {
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  retry: () => void;
+  // retry: () => void;
 }
 
-export const List = ({ users, retry, ...props }: ListProps) => {
+export const List = ({ users, ...props }: ListProps) => {
   const { mutate } = useEditProject();
-  const { open } = useProjectModal();
-  const pinPorject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(retry);
+  // const { open } = useProjectModal();
+  // const pinPorject = (id: number) => (pin: boolean) =>
+  //   mutate({ id, pin }).then(retry);
+  const pinPorject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const { startEdit } = useProjectModal();
+  const editProject = (id: number) => () => startEdit(id);
 
   return (
     <Table
@@ -90,9 +93,18 @@ export const List = ({ users, retry, ...props }: ListProps) => {
                 overlay={
                   <Menu>
                     <Menu.Item key="edit">
-                      <ButtonNoPadding onClick={open} type="link">
+                      <ButtonNoPadding
+                        onClick={editProject(project.id)}
+                        type="link"
+                      >
                         编辑
                       </ButtonNoPadding>
+                    </Menu.Item>
+                    <Menu.Item key="delete">
+                      {/* <ButtonNoPadding onClick={open} type="link">
+                        编辑
+                      </ButtonNoPadding> */}
+                      <ButtonNoPadding type="link">删除</ButtonNoPadding>
                     </Menu.Item>
                   </Menu>
                 }
