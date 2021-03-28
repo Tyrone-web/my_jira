@@ -39,7 +39,7 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 26rem;
+  min-width: 20rem;
   border-radius: 6px;
   background-color: rgb(244, 245, 247);
   padding: 0.7rem 0.7rem 1rem;

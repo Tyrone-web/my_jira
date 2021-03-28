@@ -5,7 +5,12 @@ import { SearchPanel } from './search-panel';
 import { useUser } from 'utils/user';
 import { useProjects } from 'utils/project';
 import { useProjectModal, useProjectSearchParma } from './utils';
-import { ButtonNoPadding, ErrorBox, Row } from 'components/lib';
+import {
+  ButtonNoPadding,
+  ErrorBox,
+  Row,
+  ScreenContainer,
+} from 'components/lib';
 
 export const ProjectList = () => {
   const { open } = useProjectModal();
@@ -17,7 +22,7 @@ export const ProjectList = () => {
   );
 
   return (
-    <Container>
+    <ScreenContainer>
       <Row between={true}>
         <h2>项目列表</h2>
         <ButtonNoPadding type="link" onClick={open}>
@@ -33,10 +38,6 @@ export const ProjectList = () => {
         dataSource={list || []}
         users={users || []}
       />
-    </Container>
+    </ScreenContainer>
   );
 };
-
-const Container = styled.div`
-  padding: 2.2rem;
-`;

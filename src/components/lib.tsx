@@ -58,3 +58,10 @@ export const ErrorBox = ({ error }: { error: unknown }) => {
 export const ButtonNoPadding = styled(Button)`
   padding: 0;
 `;
+
+export const ScreenContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2.2rem;
+`;
