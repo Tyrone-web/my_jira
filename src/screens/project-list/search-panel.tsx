@@ -1,13 +1,8 @@
 /* @jsxImportSource @emotion/react */
 import { Form, Input } from 'antd';
 import { UserSelect } from 'components/user-select';
-import { Project } from './list';
-
-export interface User {
-  name: string;
-  id: number;
-  token: string;
-}
+import { Project } from 'types/Project';
+import { User } from 'types/user';
 
 interface SearchPanelProps {
   param: Partial<Pick<Project, 'name' | 'personId'>>;

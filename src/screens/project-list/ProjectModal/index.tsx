@@ -26,6 +26,11 @@ export const ProjectModal = () => {
     });
   };
 
+  const onClose = () => {
+    form.resetFields();
+    close();
+  };
+
   const title = editingProject ? '编辑项目' : '新建项目';
 
   useEffect(() => {
@@ -37,7 +42,7 @@ export const ProjectModal = () => {
       forceRender={true}
       width="100%"
       visible={projectModalOpen}
-      onClose={close}
+      onClose={onClose}
     >
       <Container>
         {isLoading ? (
@@ -78,7 +83,7 @@ export const ProjectModal = () => {
                 >
                   提交
                 </Button>
-                <Button onClick={close}>取消</Button>
+                <Button onClick={onClose}>取消</Button>
               </Form.Item>
             </Form>
           </>

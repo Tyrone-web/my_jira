@@ -12,7 +12,7 @@ const Project = () => {
       <Routes>
         <Route path="/kanban" element={<KanbanScreen />}></Route>
         <Route path="/epic" element={<EpicScreen />}></Route>
-        <Navigate to={window.location.pathname + '/kanban'} />
+        <Navigate to={window.location.pathname + '/kanban'} replace={true} />
       </Routes>
     </div>
   );

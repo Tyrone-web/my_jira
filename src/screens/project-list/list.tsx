@@ -5,19 +5,11 @@ import { Pin } from 'components/pin';
 import { useDeleteProject, useEditProject } from 'utils/project';
 import { ButtonNoPadding } from 'components/lib';
 import { useProjectModal, useProjectQueryKey } from './utils';
+import { Project } from 'types/Project';
 
 interface User {
   name: string;
   id: number;
-}
-
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization: string;
-  created: number;
 }
 
 interface ListProps extends TableProps<Project> {
