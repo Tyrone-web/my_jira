@@ -1,6 +1,7 @@
 import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useProject } from "utils/project";
-import { useUrlQueryParam } from "utils/url";
+import { useSetUrlSearchParm, useUrlQueryParam } from "utils/url";
 
 export const useProjectSearchParma = () => {
   const [param, setParam] = useUrlQueryParam(useMemo(() => (['name', 'personId']), [])); // 使用useMomo。将对象僵化
@@ -15,6 +16,11 @@ export const useProjectSearchParma = () => {
   ] as const;
 }
 
+export const useProjectQueryKey = () => {
+  const [params] = useSearchParams();
+  return ['projects', params];
+}
+
 export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
     'projectCreate'
@@ -23,19 +29,13 @@ export const useProjectModal = () => {
     'editingProjectId'
   ]);
 
-  console.log(editingProjectId, 'editingProjectId');
+  const setUrlParams = useSetUrlSearchParm();
   const { data: editingProject, isLoading } = useProject(Number(editingProjectId))
 
   const open = () => {
-    console.log('open');
     setProjectCreate({ projectCreate: true })
   };
-  const close = () => {
-    console.log('test');
-    setProjectCreate({ projectCreate: undefined });
-    setEditingProjectId({ editingProjectId: undefined });
-  };
-  // const close = () => setProjectCreate({ projectCreate: undefined });
+  const close = () => setUrlParams({ projectCreate: '', editingProjectId: '' })
   const startEdit = (id: number) => setEditingProjectId({ editingProjectId: id });
 
   return {

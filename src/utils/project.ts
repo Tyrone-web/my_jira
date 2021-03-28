@@ -1,7 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { QueryKey, useMutation, useQuery } from 'react-query';
 import { Project } from 'screens/project-list/list';
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
+import { useAddConfig, useEditConfig, useDeleteConfig } from './use-optimistic-options';
 
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
@@ -10,32 +11,39 @@ export const useProjects = (param?: Partial<Project>) => {
 }
 
 // 编辑Project
-export const useEditProject = () => {
+export const useEditProject = (queryKey: QueryKey) => {
   const client = useHttp();
-  const queryClient = useQueryClient();
-
   return useMutation(
     (param: Partial<Project>) => client(`projects/${param.id}`, {
       method: 'PATCH',
       data: param,
-    }), {
-    onSuccess: () => queryClient.invalidateQueries('projects')
-  });
+    }),
+    useEditConfig(queryKey)
+  )
 }
 
 // 添加Project
-export const useAddProject = () => {
+export const useAddProject = (queryKey: QueryKey) => {
   const client = useHttp();
-  const queryClient = useQueryClient();
 
   return useMutation(
     (param: Partial<Project>) => client(`projects`, {
       data: param,
       method: 'POST'
     }),
-    {
-      onSuccess: () => queryClient.invalidateQueries('projects')
-    }
+    useAddConfig(queryKey)
+  )
+}
+
+// 删除Project
+export const useDeleteProject = (queryKey: QueryKey) => {
+  const client = useHttp();
+
+  return useMutation(
+    ({ id }: { id: number }) => client(`projects/${id}`, {
+      method: 'DELETE'
+    }),
+    useDeleteConfig(queryKey)
   )
 }
 
