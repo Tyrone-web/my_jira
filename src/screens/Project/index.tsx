@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Routes, Route, Navigate } from 'react-router';
-import { KanbanScreen } from '../KanbanScreen';
-import { EpicScreen } from '../EpicScreen';
+import { KanbanScreen } from '../Kanban';
+import { EpicScreen } from '../Epic';
 
 const Project = () => {
   return (

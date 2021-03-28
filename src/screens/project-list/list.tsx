@@ -5,7 +5,7 @@ import { Pin } from 'components/pin';
 import { useDeleteProject, useEditProject } from 'utils/project';
 import { ButtonNoPadding } from 'components/lib';
 import { useProjectModal, useProjectQueryKey } from './utils';
-import { Project } from 'types/Project';
+import { Project } from 'types/project';
 
 interface User {
   name: string;
