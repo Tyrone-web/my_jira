@@ -45,10 +45,12 @@ const Aside = styled.aside`
 
 const Main = styled.div`
   display: flex;
+  overflow: hidden;
   box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);
 `;
 
 const Container = styled.div`
   display: grid;
   grid-template-columns: 8rem 1fr;
+  overflow: hidden;
 `;

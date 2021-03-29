@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useDebounce, useDocumentTitle } from 'utils/index';
 import { List } from './list';
 import { SearchPanel } from './search-panel';
