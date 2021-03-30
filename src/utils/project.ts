@@ -47,6 +47,7 @@ export const useDeleteProject = (queryKey: QueryKey) => {
   )
 }
 
+// 获取project详情
 export const useProject = (id?: number) => {
   const client = useHttp();
 

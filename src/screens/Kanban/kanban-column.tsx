@@ -1,7 +1,7 @@
 import { Kanban } from 'types/kanban';
 import { useTasks } from 'utils/task';
 import { useTaskTypes } from 'utils/task-type';
-import { useTaskSearchParams } from './util';
+import { useTaskSearchParams, useTasksModal } from './util';
 import taskIcon from 'assets/task.svg';
 import bugIcon from 'assets/bug.svg';
 import styled from '@emotion/styled';
@@ -11,12 +11,20 @@ import { CreateTaskt } from './create-task';
 export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   const { data: allTasks } = useTasks(useTaskSearchParams());
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
+  const { startEdit } = useTasksModal();
+
+  const edit = (id: number) => () => startEdit(id); // 函数柯里化
+
   return (
     <Container>
       <h3>{kanban.name}</h3>
       <TasksContainer>
         {tasks?.map((task) => (
-          <Card style={{ marginBottom: '0.5rem' }} key={task.id}>
+          <Card
+            onClick={edit(task.id)}
+            style={{ marginBottom: '0.5rem', cursor: 'pointer' }}
+            key={task.id}
+          >
             <div>{task.name}</div>
             <TaskTypeIcon id={task.typeId} />
           </Card>
