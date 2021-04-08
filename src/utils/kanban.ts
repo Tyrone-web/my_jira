@@ -3,7 +3,7 @@ import { Kanban } from "types/kanban";
 import { Task } from "types/task";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useAddConfig, useEditConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
 
 // 获取kanban列表
 export const useKanbans = (param?: Partial<Kanban>) => {
@@ -48,4 +48,16 @@ export const useTask = (id?: number) => {
       enabled: !!id // id有值时才执行useQuery
     }
   );
+}
+
+// 删除Kanban
+export const useDeleteKanban = (queryKey: QueryKey) => {
+  const client = useHttp();
+
+  return useMutation(
+    ({ id }: { id: number }) => client(`kanbans/${id}`, {
+      method: 'DELETE'
+    }),
+    useDeleteConfig(queryKey)
+  )
 }

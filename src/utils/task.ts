@@ -1,14 +1,16 @@
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { Task } from "types/task";
-import { cleanObject } from "utils";
+import { cleanObject, useDebounce } from "utils";
 import { useHttp } from "./http";
-import { useAddConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig } from "./use-optimistic-options";
 
 // 获取Task列表
 export const useTasks = (param?: Partial<Task>) => {
   const client = useHttp();
 
-  return useQuery<Task[]>(['tasks', param], () => client('tasks', { data: cleanObject(param || {}) }))
+  const debouncedParam = { ...param, name: useDebounce(param?.name, 400) };
+
+  return useQuery<Task[]>(['tasks', debouncedParam], () => client('tasks', { data: cleanObject(debouncedParam || {}) }))
 }
 
 // 添加task
@@ -21,5 +23,17 @@ export const useAddTask = (queryKey: QueryKey) => {
       method: 'POST'
     }),
     useAddConfig(queryKey)
+  )
+}
+
+// 删除Task
+export const useDeleteTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+
+  return useMutation(
+    ({ id }: { id: number }) => client(`tasks/${id}`, {
+      method: 'DELETE'
+    }),
+    useDeleteConfig(queryKey)
   )
 }
