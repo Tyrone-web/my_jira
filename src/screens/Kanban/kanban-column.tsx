@@ -12,26 +12,40 @@ import { Task } from 'types/task';
 import { Mark } from 'components/mark';
 import { useDeleteKanban } from 'utils/kanban';
 import { Row } from 'components/lib';
+import React from 'react';
+import { Drop, DropChild, Drag } from 'components/drag-and-drop';
 
-export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
+export const KanbanColumn = React.forwardRef<
+  HTMLDivElement,
+  { kanban: Kanban }
+>(({ kanban, ...props }, ref) => {
   const { data: allTasks } = useTasks(useTaskSearchParams());
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
 
   return (
-    <Container>
+    <Container {...props} ref={ref}>
       <Row between>
         <h3>{kanban.name}</h3>
-        <More kanban={kanban} />
+        <More kanban={kanban} key={kanban.id} />
       </Row>
       <TasksContainer>
-        {tasks?.map((task) => (
-          <TaskCard task={task} />
-        ))}
+        <Drop type="ROW" direction="vertical" droppableId={String(kanban.id)}>
+          <DropChild>
+            {tasks?.map((task, index) => (
+              <Drag key={task.id} index={index} draggableId={`task${task.id}`}>
+                <div>
+                  <TaskCard task={task} key={task.id} />
+                </div>
+              </Drag>
+            ))}
+          </DropChild>
+        </Drop>
+
         <CreateTaskt kanbanId={kanban.id} />
       </TasksContainer>
     </Container>
   );
-};
+});
 
 const TaskCard = ({ task }: { task: Task }) => {
   const { startEdit } = useTasksModal();
