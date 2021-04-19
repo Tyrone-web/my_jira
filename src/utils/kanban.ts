@@ -3,7 +3,7 @@ import { Kanban } from "types/kanban";
 import { Task } from "types/task";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig, useReorderKanbanConfig } from "./use-optimistic-options";
 
 // 获取kanban列表
 export const useKanbans = (param?: Partial<Kanban>) => {
@@ -59,5 +59,28 @@ export const useDeleteKanban = (queryKey: QueryKey) => {
       method: 'DELETE'
     }),
     useDeleteConfig(queryKey)
+  )
+}
+
+export interface SortProps {
+  // 要重新排序的item
+  fromId: number;
+  // 目标item
+  referenceId: number;
+  // 放在目标item的前还是后
+  type: 'before' | 'after';
+  fromKanbanId?: number;
+  toKanbanId?: number;
+}
+
+export const useReorderKanban = (querykey: QueryKey) => {
+  const client = useHttp();
+
+  return useMutation(
+    (param: SortProps) => client('kanbans/reorder', {
+      data: param,
+      method: 'POST'
+    }),
+    useReorderKanbanConfig(querykey)
   )
 }
