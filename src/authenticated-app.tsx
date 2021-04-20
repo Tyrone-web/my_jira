@@ -9,7 +9,8 @@ import { ReactComponent as Softwarelogo } from 'assets/software-logo.svg';
 import Project from 'screens/Project';
 import { resetRouter } from 'utils';
 import { ProjectModal } from 'screens/project-list/ProjectModal';
-import { ProjectPopOver } from 'components/project-popOver';
+import { ProjectPopOver } from 'components/project-pop-over';
+import { UserPopOver } from 'components/user-pop-over';
 
 export const AuthenticatedApp = () => {
   return (
@@ -39,7 +40,7 @@ const PageHeader = () => {
           <Softwarelogo width="12rem" color="rgb(38, 132, 255)" />
         </ButtonNoPadding>
         <ProjectPopOver />
-        <span>用户</span>
+        <UserPopOver />
       </HeaderLeft>
       <HeaderRigth>
         <Dropdown

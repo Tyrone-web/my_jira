@@ -1,7 +1,7 @@
 import { useDebounce, useDocumentTitle } from 'utils/index';
 import { List } from './list';
 import { SearchPanel } from './search-panel';
-import { useUser } from 'utils/user';
+import { useUsers } from 'utils/user';
 import { useProjects } from 'utils/project';
 import { useProjectModal, useProjectSearchParma } from './utils';
 import {
@@ -15,7 +15,7 @@ export const ProjectList = () => {
   const { open } = useProjectModal();
   useDocumentTitle('项目列表', false);
   const [param, setParam] = useProjectSearchParma();
-  const { data: users } = useUser();
+  const { data: users } = useUsers();
   const { isLoading, error, data: list } = useProjects(
     useDebounce(param, 1000)
   );
