@@ -35,8 +35,7 @@
     "test": "craco test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build -r https://github.com/Tyrone-web/Tyrone-web.github.io.git -b main",
-    "prepare": "husky install"
+    "deploy": "gh-pages -d build -r https://github.com/Tyrone-web/Tyrone-web.github.io.git -b main"
   },
   "eslintConfig": {
     "extends": [
