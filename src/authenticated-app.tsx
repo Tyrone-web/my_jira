@@ -12,7 +12,7 @@ import { ProjectModal } from 'screens/project-list/ProjectModal';
 import { ProjectPopOver } from 'components/project-pop-over';
 import { UserPopOver } from 'components/user-pop-over';
 
-export const AuthenticatedApp = () => {
+const AuthenticatedApp = () => {
   return (
     <Container>
       <Router>
@@ -62,6 +62,8 @@ const PageHeader = () => {
     </Header>
   );
 };
+
+export default AuthenticatedApp;
 
 const Container = styled.div`
   display: grid;

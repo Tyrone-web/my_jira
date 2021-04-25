@@ -1,13 +1,18 @@
 import React from 'react';
 import { useAuth } from 'context/auth-context';
-import { AuthenticatedApp } from 'authenticated-app';
-import { UnauthenticatedApp } from 'unauthenticated-app';
+import { FullPageLoading } from 'components/lib';
+
+const AuthenticatedApp = React.lazy(() => import('authenticated-app'));
+const UnauthenticatedApp = React.lazy(() => import('unauthenticated-app'));
 
 function App() {
   const { user } = useAuth();
   return (
     <div className="App">
-      {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {/* React.suspence还在实验阶段 */}
+      <React.Suspense fallback={<FullPageLoading />}>
+        {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      </React.Suspense>
     </div>
   );
 }

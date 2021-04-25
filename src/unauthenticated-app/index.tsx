@@ -8,7 +8,7 @@ import left from 'assets/left.svg';
 import right from 'assets/right.svg';
 import { ErrorBox } from 'components/lib';
 
-export const UnauthenticatedApp = () => {
+const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -40,6 +40,8 @@ export const UnauthenticatedApp = () => {
     </Container>
   );
 };
+
+export default UnauthenticatedApp;
 
 const Container = styled.div`
   display: flex;
