@@ -1,4 +1,3 @@
-import { useForm } from 'antd/es/form/Form';
 import { Button, Form, Input, Modal } from 'antd';
 import { useEditTask } from 'utils/kanban';
 import { useTasksModal, useTasksQueryKey } from './util';
@@ -13,7 +12,7 @@ const layout = {
 };
 
 export const TaskModal = () => {
-  const [form] = useForm();
+  const [form] = Form.useForm();
   const { editingTaskId, editingTask, close } = useTasksModal();
   const { mutateAsync: editTask, isLoading: editLoading } = useEditTask(
     useTasksQueryKey()
